@@ -21,6 +21,7 @@ This application is designed to streamline the process of logging and managing s
 - [ ] Implement additional features such as user authentication and authorization.
 - [ ] Markdown support wysiwyg editor
 - [ ] AI summary of the week
+- [ ] Playwright tests against test database
 
 ## Running the Application
 

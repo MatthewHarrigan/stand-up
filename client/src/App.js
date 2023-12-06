@@ -6,12 +6,13 @@ import {
   fetchTeamMembers,
   addNote,
   getNotesForDate,
-  deleteNote
+  deleteNote,
 } from "./utils/api";
 
 import TeamMemberForm from "./components/TeamMemberForm";
 import TeamMemberList from "./components/TeamMemberList";
 import SpeakerSelection from "./components/SpeakerSelection";
+import History from "./components/History";
 
 const App = () => {
   const getTodayDate = () => {
@@ -69,8 +70,6 @@ const App = () => {
     initFetch();
   }, []);
 
-
-
   useEffect(() => {
     // Check if the history object is not empty
     if (Object.keys(history).length > 0) {
@@ -82,9 +81,9 @@ const App = () => {
     const fetchNotes = async () => {
       try {
         const notesData = await getNotesForDate(currentDate);
-        setHistory(prevHistory => ({
+        setHistory((prevHistory) => ({
           ...prevHistory,
-          [currentDate]: notesData
+          [currentDate]: notesData,
         }));
       } catch (error) {
         console.error("Error fetching notes:", error);
@@ -93,7 +92,6 @@ const App = () => {
 
     fetchNotes();
   }, [currentDate]); // Re-fetch notes whenever the date changes
-
 
   const changeDate = (newDate) => {
     setCurrentDate(newDate);
@@ -127,9 +125,9 @@ const App = () => {
       await addNote(currentDate, selectedSpeaker, notes);
       // Fetch and update the notes for the current date
       const updatedNotes = await getNotesForDate(currentDate);
-      setHistory(prevHistory => ({
+      setHistory((prevHistory) => ({
         ...prevHistory,
-        [currentDate]: updatedNotes
+        [currentDate]: updatedNotes,
       }));
       setSelectedSpeaker("");
       setNotes("");
@@ -150,21 +148,22 @@ const App = () => {
 
   // In App.js
 
-const handleDeleteNote = async (noteId) => {
-  const success = await deleteNote(noteId);
-  if (success) {
-    // Update the local state to reflect the deletion
-    // Assuming `history` state holds the notes, you need to filter out the deleted note
-    setHistory(prevHistory => {
-      const updatedHistory = { ...prevHistory };
-      updatedHistory[currentDate] = updatedHistory[currentDate].filter(note => note.id !== noteId);
-      return updatedHistory;
-    });
-  } else {
-    // Handle unsuccessful deletion, like showing an error message
-  }
-};
-
+  const handleDeleteNote = async (noteId) => {
+    const success = await deleteNote(noteId);
+    if (success) {
+      // Update the local state to reflect the deletion
+      // Assuming `history` state holds the notes, you need to filter out the deleted note
+      setHistory((prevHistory) => {
+        const updatedHistory = { ...prevHistory };
+        updatedHistory[currentDate] = updatedHistory[currentDate].filter(
+          (note) => note.id !== noteId
+        );
+        return updatedHistory;
+      });
+    } else {
+      // Handle unsuccessful deletion, like showing an error message
+    }
+  };
 
   const moveEntry = (date, index, direction) => {
     const entries = [...history[date]];
@@ -221,38 +220,20 @@ const handleDeleteNote = async (noteId) => {
       <div>Next Speaker: {nextSpeaker}</div>
       <div>
         <h3>History</h3>
-
+        <History
+          history={history}
+          currentDate={currentDate}
+          updateNote={updateNote}
+          handleDeleteNote={handleDeleteNote}
+          moveEntry={moveEntry}
+          team
+        />
         <div>
           <button onClick={handlePreviousDay}>Previous Day</button>
           <button onClick={() => setCurrentDate(getTodayDate())}>Today</button>
           <button onClick={handleNextDay}>Next Day</button>
 
           <h3>History for {currentDate}</h3>
-          <ul data-testid="notes-history">
-          {history[currentDate]?.map((entry, index) => (
-            <li key={index}>
-              <strong>{entry.TeamMember.name}</strong>: {entry.content}
-              <textarea
-                defaultValue={entry.content}
-                onBlur={(e) => updateNote(currentDate, index, e.target.value)}
-              />
-<button onClick={() => handleDeleteNote(entry.id)}>Delete Note</button>
-              <button
-                onClick={() => moveEntry(currentDate, index, "up")}
-                disabled={history[currentDate].length <= 1}
-              >
-                Move Up
-              </button>
-              <button
-                onClick={() => moveEntry(currentDate, index, "down")}
-                disabled={history[currentDate].length <= 1}
-              >
-                Move Down
-              </button>
-            </li>
-          ))}
-          </ul>
-         
         </div>
       </div>
     </div>
