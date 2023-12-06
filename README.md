@@ -19,7 +19,7 @@ This application is designed to streamline the process of logging and managing s
 - [ ] Implement database migrations with Sequelize for scalable data management.
 - [ ] Write basic tests to ensure the reliability and integrity of the application.
 - [ ] Implement additional features such as user authentication and authorization.
-- [ ] Markdown support wysiwyg editor 
+- [ ] Markdown support wysiwyg editor
 - [ ] AI summary of the week
 
 ## Running the Application
@@ -34,9 +34,22 @@ This application is designed to streamline the process of logging and managing s
 1. Clone the repository:
    ```bash
    git clone <repository-url>
+   ```
+2. Run the db migrations
 
-
-npx sequelize-cli db:migrate 
+```bash
+npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all
+```
 
+3. Start the Server
+
+```bash
 npm run start:nodemon
+```
+
+4. Start the client
+
+```bash
+npm start
+```

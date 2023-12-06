@@ -228,8 +228,9 @@ const handleDeleteNote = async (noteId) => {
           <button onClick={handleNextDay}>Next Day</button>
 
           <h3>History for {currentDate}</h3>
+          <ul data-testid="notes-history">
           {history[currentDate]?.map((entry, index) => (
-            <div key={index}>
+            <li key={index}>
               <strong>{entry.TeamMember.name}</strong>: {entry.content}
               <textarea
                 defaultValue={entry.content}
@@ -248,8 +249,10 @@ const handleDeleteNote = async (noteId) => {
               >
                 Move Down
               </button>
-            </div>
+            </li>
           ))}
+          </ul>
+         
         </div>
       </div>
     </div>
