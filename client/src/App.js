@@ -7,6 +7,7 @@ import {
   addNote,
   getNotesForDate,
   deleteNote,
+  updateNote as updateNoteAPI,
 } from "./utils/api";
 
 import TeamMemberForm from "./components/TeamMemberForm";
@@ -53,7 +54,6 @@ const App = () => {
         prevMembers.filter((member) => member.id !== userId)
       );
     } else {
-      // Handle the error case (e.g., show a notification to the user)
     }
   };
 
@@ -71,7 +71,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // Check if the history object is not empty
     if (Object.keys(history).length > 0) {
       localStorage.setItem("speakerHistory", JSON.stringify(history));
     }
@@ -91,7 +90,7 @@ const App = () => {
     };
 
     fetchNotes();
-  }, [currentDate]); // Re-fetch notes whenever the date changes
+  }, [currentDate]);
 
   const changeDate = (newDate) => {
     setCurrentDate(newDate);
@@ -121,9 +120,7 @@ const App = () => {
 
   const submitSpeaker = async () => {
     try {
-      // Add note to the database
       await addNote(currentDate, selectedSpeaker, notes);
-      // Fetch and update the notes for the current date
       const updatedNotes = await getNotesForDate(currentDate);
       setHistory((prevHistory) => ({
         ...prevHistory,
@@ -145,8 +142,6 @@ const App = () => {
     const updatedEntries = history[date].filter((_, i) => i !== index);
     setHistory({ ...history, [date]: updatedEntries });
   };
-
-  // In App.js
 
   const handleDeleteNote = async (noteId) => {
     const success = await deleteNote(noteId);
@@ -179,14 +174,36 @@ const App = () => {
     setHistory({ ...history, [date]: entries });
   };
 
-  const updateNote = (date, index, newNote) => {
-    const updatedEntries = [...history[date]];
-    updatedEntries[index].notes = newNote;
-    setHistory({ ...history, [date]: updatedEntries });
+  const updateNote = async (date, index, newContent) => {
+    const noteId = history[date][index].id; // Assuming each note has a unique 'id'
+
+    try {
+      const updatedNote = await updateNoteAPI(noteId, newContent); // Call the API function
+      // Update the local state
+      setHistory((prevHistory) => {
+        const updatedEntries = [...prevHistory[date]];
+        updatedEntries[index] = {
+          ...updatedEntries[index],
+          content: newContent,
+        };
+        return { ...prevHistory, [date]: updatedEntries };
+      });
+    } catch (error) {
+      console.error("Error updating note:", error);
+      // Handle error (e.g., show a notification to the user)
+    }
+  };
+
+  const handleNotesKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey) {
+      e.preventDefault();
+      submitSpeaker();
+    }
   };
 
   return (
     <div>
+      <h1>Stand-Up</h1>
       <div>
         <TeamMemberForm onAddTeamMember={handleAddTeamMember} />
 
@@ -206,9 +223,30 @@ const App = () => {
         <textarea
           value={notes}
           onChange={handleNotesChange}
+          onKeyDown={handleNotesKeyDown}
           placeholder="Enter notes"
+          id="my-text-area"
         ></textarea>
-        {!notes.trim() && <p className="error">Please enter a note.</p>}
+
+        {/* <MDXEditor
+  id="my-text-area"
+  onChange={handleNotesChange}
+  markdown={'Enter notes'}
+  plugins={[
+    // the viewMode parameter lets you switch the editor to diff or source mode.
+    // you can get the diffMarkdown from your backend and pass it here.
+    diffSourcePlugin({ diffMarkdown: 'An older version', viewMode: 'rich-text' }),
+    toolbarPlugin({
+      toolbarContents: () => (
+        <DiffSourceToggleWrapper>
+          <UndoRedo />
+        </DiffSourceToggleWrapper>
+      )
+    })
+  ]}
+/> */}
+
+        {/* {!notes.trim() && <p className="error">Please enter a note.</p>} */}
 
         <button
           onClick={submitSpeaker}
@@ -217,9 +255,14 @@ const App = () => {
           Submit
         </button>
       </div>
-      <div>Next Speaker: {nextSpeaker}</div>
+      {/* <div>Next Speaker: {nextSpeaker}</div> */}
       <div>
-        <h3>History</h3>
+          <button onClick={handlePreviousDay}>Previous Day</button>
+          <button onClick={() => setCurrentDate(getTodayDate())}>Today</button>
+          <button onClick={handleNextDay}>Next Day</button>
+        </div>
+      <div>
+        <h3>History for {currentDate}</h3>
         <History
           history={history}
           currentDate={currentDate}
@@ -228,13 +271,6 @@ const App = () => {
           moveEntry={moveEntry}
           team
         />
-        <div>
-          <button onClick={handlePreviousDay}>Previous Day</button>
-          <button onClick={() => setCurrentDate(getTodayDate())}>Today</button>
-          <button onClick={handleNextDay}>Next Day</button>
-
-          <h3>History for {currentDate}</h3>
-        </div>
       </div>
     </div>
   );

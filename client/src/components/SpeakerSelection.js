@@ -15,7 +15,7 @@ const SpeakerSelection = ({
           </option>
         ))}
       </select>
-      {!selectedSpeaker && <p className="error">Please select a speaker.</p>}
+      {/* {!selectedSpeaker && <p className="error">Please select a speaker.</p>} */}
     </div>
   );
 };

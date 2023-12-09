@@ -62,8 +62,6 @@ export const getNotesForDate = async (date) => {
   return response.json();
 };
 
-// In utils/api.js
-
 export const deleteNote = async (noteId) => {
   try {
     const response = await fetch(`http://localhost:3000/notes/${noteId}`, {
@@ -79,5 +77,26 @@ export const deleteNote = async (noteId) => {
   } catch (error) {
     console.error('Error deleting note:', error);
     return false;
+  }
+};
+
+export const updateNote = async (noteId, updatedContent) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/notes/${noteId}`, {
+      method: 'PUT', // or 'PATCH' if your API supports partial updates
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content: updatedContent })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json(); // Return the updated note or a success message as per your API response
+  } catch (error) {
+    console.error('Error updating note:', error);
+    throw error; // Rethrow the error to handle it in the component
   }
 };

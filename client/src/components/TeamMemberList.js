@@ -5,7 +5,7 @@ const TeamMemberList = ({ teamMembers, onRemoveTeamMember }) => {
     <ul data-testid="team-members">
       {teamMembers.map((member) => (
         <li key={member.id}>
-          {member.name}
+          {member.name} 
           <button
             onClick={() => onRemoveTeamMember(member.id)}
             // data-testid={`remove-button-${member.id}`}

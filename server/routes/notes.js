@@ -47,4 +47,26 @@ router.delete('/:noteId', async (req, res) => {
   }
 });
 
+router.put('/:noteId', async (req, res) => {
+  try {
+    const noteId = req.params.noteId;
+    const { content } = req.body; // Assuming you're only updating the content
+
+    const noteToUpdate = await Note.findByPk(noteId);
+
+    if (!noteToUpdate) {
+      return res.status(404).send("Note not found");
+    }
+
+    noteToUpdate.content = content; // Update the content of the note
+    await noteToUpdate.save(); // Save the updated note
+
+    res.json(noteToUpdate); // Send back the updated note
+  } catch (error) {
+    console.error("Error updating note:", error);
+    res.status(500).send("Error updating note");
+  }
+});
+
+
 module.exports = router;

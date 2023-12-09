@@ -15,8 +15,8 @@ This application is designed to streamline the process of logging and managing s
 
 - [ ] Move UI components out to make the codebase more modular and manageable.
 - [ ] Apply styling to enhance the UI/UX of the application.
-- [ ] Expand API support for logging and managing notes.
-- [ ] Implement database migrations with Sequelize for scalable data management.
+- [x] Expand API support for logging and managing notes.
+- [x] Implement database migrations with Sequelize for scalable data management.
 - [ ] Write basic tests to ensure the reliability and integrity of the application.
 - [ ] Implement additional features such as user authentication and authorization.
 - [ ] Markdown support wysiwyg editor
