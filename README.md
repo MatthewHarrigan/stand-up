@@ -29,29 +29,58 @@ This application is designed to streamline the process of logging and managing s
 ### Prerequisites
 
 - Node.js
-- npm or yarn
+- npm
 
 ### Getting Started
 
-1. Clone the repository:
+Clone the repository
    ```bash
    git clone <repository-url>
    ```
-2. Run the db migrations
 
-```bash
-npx sequelize-cli db:migrate
-npx sequelize-cli db:seed:all
-```
+Install the dependencies
+   ```bash
+   npm run install:all
+   ```
 
-3. Start the Server
+DB
+   Setup the DB
+   ```bash
+   npm run db:setup
+   ```
 
-```bash
-npm run start:nodemon
-```
+Start the Server
 
-4. Start the client
+   ```bash
+   cd server
+   npm run start:nodemon
+   ```
 
-```bash
-npm start
-```
+Start the client
+
+   ```bash
+   cd client
+   npm run start
+   ```
+
+### Database
+   Create a migration
+   ```bash
+   npx sequelize-cli migration:create --{name}
+   ```
+   
+   Run a migration
+   ```bash
+   npx run db:migrate
+   ```
+
+   Seed the db
+   ```bash
+   npx sequelize-cli db:seed:all
+   ```
+
+### Test
+   Run Playwright tests
+   ```bash
+   npx playwright test --ui
+   ```
