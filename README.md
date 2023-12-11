@@ -64,23 +64,26 @@ Start the client
    ```
 
 ### Database
+   DB admin
+   [DB Browser for SQLite](https://sqlitebrowser.org/)
+
    Create a migration
    ```bash
-   npx sequelize-cli migration:create --{name}
+   npm sequelize-cli migration:create --{name}
    ```
    
    Run a migration
    ```bash
-   npx run db:migrate
+   npm run db:migrate
    ```
 
    Seed the db
    ```bash
-   npx sequelize-cli db:seed:all
+   npm sequelize-cli db:seed:all
    ```
 
 ### Test
    Run Playwright tests
    ```bash
    npx playwright test --ui
-   ```
+   ```npm cache clean --force
