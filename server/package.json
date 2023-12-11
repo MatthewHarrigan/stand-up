@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:nodemon": "./node_modules/nodemon/bin/nodemon.js",
-    "db:setup": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "db:setup": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "db:migrate": "npx sequelize-cli db:migrate"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
