@@ -226,6 +226,12 @@ const App = () => {
           onKeyDown={handleNotesKeyDown}
           placeholder="Enter notes"
           id="my-text-area"
+          class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+          focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
+          disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+          invalid:border-pink-500 invalid:text-pink-600
+          focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+        "
         ></textarea>
 
         {/* <MDXEditor
@@ -251,15 +257,16 @@ const App = () => {
         <button
           onClick={submitSpeaker}
           disabled={!selectedSpeaker || !notes.trim()}
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
         >
           Submit
         </button>
       </div>
       {/* <div>Next Speaker: {nextSpeaker}</div> */}
       <div>
-          <button onClick={handlePreviousDay}>Previous Day</button>
-          <button onClick={() => setCurrentDate(getTodayDate())}>Today</button>
-          <button onClick={handleNextDay}>Next Day</button>
+          <button onClick={handlePreviousDay} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Previous Day</button>
+          <button onClick={() => setCurrentDate(getTodayDate())} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Today</button>
+          <button onClick={handleNextDay} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Next Day</button>
         </div>
       <div>
         <h3>History for {currentDate}</h3>
